@@ -25,6 +25,18 @@ def make_frequency_dict(input_list):
             my_dict[item] += 1
     return my_dict
 
+def merge_upper_lower(in_dict): #by blackgun
+    for k, v in in_dict.items():
+        k_lower = (k[0].lower(),)
+        if k_lower[0] != k[0] and k_lower in in_dict:
+            v_lower = in_dict[k_lower]
+            # print(k[0],v,k_lower,v_lower)
+            in_dict[k_lower] = v_lower + v
+            del in_dict[k]
+            # print(k_lower,in_dict[(k_lower,)])
+
+
+
 # Runtime error checking on the commmand line for parameter completeness
 # DEVNOTE: may consider more intelligent argument parsing, ie. int vs text
 #          or bad ordered args, ie. prgmname int filename == BAD!!!!
@@ -53,6 +65,8 @@ print "Number of words counted: "+str(len(low))
 zipped_list = find_ngrams(low, int(len_of_phrase))
 dictionary = make_frequency_dict(zipped_list)
 
+merge_upper_lower(dictionary) #by blackgun
+
 # sort the keys of the dictionary based on their values
 sorted_keys = sorted(dictionary.keys(), key=lambda k: dictionary[k], reverse=True)
 
@@ -63,7 +77,7 @@ for k in sorted_keys:
 
 # Printing the shortlist of common phrases from 'dictionary' that are
 #      (runtime parameter #2) words long
-shortlist_len = 10  # arbitrary length of shortlist (later versions may   \
+shortlist_len = 2000  # arbitrary length of shortlist (later versions may   \
                     #   make this a runtime parameter)
 print "Printing shortlist of top "+str(shortlist_len)+" most common phrases "\
       "in text file:\n---"+str(sourcefilename)+"-"*3
